@@ -4,6 +4,7 @@
 
 const int HEIGHT = 10;
 const int WIDTH = 10;
+const int SIZE = HEIGHT * WIDTH;
 const int MINES = 15;
 
 typedef struct {
@@ -15,6 +16,7 @@ typedef struct {
 void generate_board(cell_t board[HEIGHT][WIDTH]);
 void place_mine(cell_t board[HEIGHT][WIDTH], int x, int y);
 void increase_cell_value(cell_t board[HEIGHT][WIDTH], int x, int y);
+int play(cell_t board[HEIGHT][WIDTH]);
 void display_board(cell_t board[HEIGHT][WIDTH]);
 void reveal_board(cell_t board[HEIGHT][WIDTH]);
 
@@ -22,9 +24,14 @@ void reveal_board(cell_t board[HEIGHT][WIDTH]);
 int main()
 {
     cell_t board[HEIGHT][WIDTH];
-  
+
     generate_board(board);
+
+    play(board) == 0 // win
+      ? printf("Congratulations! You won!\n")
+      : printf("You lost...\n");
     reveal_board(board);
+    
 
     return 0;
 }
@@ -32,7 +39,7 @@ int main()
 //// GENERATION
 
 /*
-** Fill board with randomly placed mines
+** Generate initial board with every cell hidden and mines placed
 */
 void generate_board(cell_t board[HEIGHT][WIDTH])
 {
@@ -46,10 +53,8 @@ void generate_board(cell_t board[HEIGHT][WIDTH])
         }
     }
 
-    // random number generation (based on Floyd algorithm)
+    // random number generation (based on Floyd algorithme)
     // generate a set of `MINES` unique positive number < `SIZE`
-
-    const int SIZE = HEIGHT * WIDTH;
     int i_m = 0;
     char is_used[SIZE];
     
@@ -87,6 +92,17 @@ void increase_cell_value(cell_t board[HEIGHT][WIDTH], int x, int y)
 {
     if (x >= 0 && y >= 0 && x < HEIGHT && y < WIDTH && board[x][y].symbol != 'X')
         board[x][y].symbol++;
+}
+
+
+//// GAME
+
+/*
+** Manage game actions
+** Return 0 if won, 1 if lost
+*/
+int play(cell_t board[HEIGHT][WIDTH])
+{
 }
 
 
