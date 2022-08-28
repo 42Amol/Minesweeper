@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 
 const int HEIGHT = 10;
@@ -11,7 +12,8 @@ typedef struct {
 } cell_t;
 
 
-void init_board(cell_t board[HEIGHT][WIDTH]);
+void generate_board(cell_t board[HEIGHT][WIDTH]);
+void place_mine(cell_t board[HEIGHT][WIDTH], int x, int y);
 void display_board(cell_t board[HEIGHT][WIDTH]);
 void reveal_board(cell_t board[HEIGHT][WIDTH]);
 
@@ -20,15 +22,20 @@ int main()
 {
     cell_t board[HEIGHT][WIDTH];
   
-    init_board(board);
+    generate_board(board);
     display_board(board);
 
     return 0;
 }
 
+//// GENERATION
 
-void init_board(cell_t board[HEIGHT][WIDTH])
+/*
+** Place mines on board and match surrounding cells
+*/
+void generate_board(cell_t board[HEIGHT][WIDTH])
 {
+    // empty board
     for (int i = 0; i < HEIGHT; i++)
     {
         for (int j = 0; j < WIDTH; j++)
@@ -39,6 +46,28 @@ void init_board(cell_t board[HEIGHT][WIDTH])
     } 
 }
 
+void place_mine(cell_t board[HEIGHT][WIDTH], int x, int y)
+{
+    board[x][y].symbol = 'X';
+
+    for (int i = -1; i < 2; i++)
+        for (int j = -1; j < 2; j++)
+            if (i != j || i != 0)
+                increase_cell_value(board, x + i, y + j);
+}
+
+void increase_cell_value(cell_t board[HEIGHT][WIDTH], int x, int y)
+{
+    if (x >= 0 && y >= 0 && x < HEIGHT && y < WIDTH && cell_t[x][y].symbol != 'X')
+        cell_t[x][y].symbol++;
+}
+
+
+//// DISPLAY
+
+/*
+** Print board in stdout following current cells state
+*/
 void display_board(cell_t board[HEIGHT][WIDTH])
 {
     for (int i = 0; i < HEIGHT; i++)
@@ -49,6 +78,9 @@ void display_board(cell_t board[HEIGHT][WIDTH])
     } 
 }
 
+/*
+** Print board in stdout ignoring hidden cells
+*/
 void reveal_board(cell_t board[HEIGHT][WIDTH])
 {
     for (int i = 0; i < HEIGHT; i++)
