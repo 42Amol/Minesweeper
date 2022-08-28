@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Clear console screen on windows and linux
+#ifdef _WIN32
+    #include <conio.h> // on windows, use clrsrc() from conio lib
+#else
+    #define clrscr() printf("\e[1;1H\e[2J") // on linux, use ASCII escape codes
+#endif
+
 
 const int HEIGHT = 10;
 const int WIDTH = 10;
@@ -27,9 +34,11 @@ int main()
 
     generate_board(board);
 
-    play(board) == 0 // win
-      ? printf("Congratulations! You won!\n")
-      : printf("You lost...\n");
+    int result = play(board);
+    clrscr();
+    result == 0
+        ? printf("Congratulations! You won!\n\n")
+        : printf("You lost...\n\n");
     reveal_board(board);
     
 
@@ -48,8 +57,8 @@ void generate_board(cell_t board[HEIGHT][WIDTH])
     {
         for (int j = 0; j < WIDTH; j++)
         {
-          board[i][j].symbol = '0';
-          board[i][j].hidden = 1;
+            board[i][j].symbol = '0';
+            board[i][j].hidden = 1;
         }
     }
 
@@ -103,6 +112,38 @@ void increase_cell_value(cell_t board[HEIGHT][WIDTH], int x, int y)
 */
 int play(cell_t board[HEIGHT][WIDTH])
 {
+    int to_dig = SIZE - MINES;
+
+    while (1)
+    {
+         display_board(board);
+
+        int x = get_x();
+        int y = get_y();
+        struct cell_t *target = &board[x][y];
+
+        if (*target.symbol == 'X')
+            return 1; // mine dug => lose
+
+        if (*target.hidden == 0)
+            printf("You already dug this cell");
+        else
+        {
+            *target.hidden = 0; // mark as dug
+            if (--to_dig == 0)
+                return 0; // all blank cells have been dug
+        }
+    }
+}
+
+int get_x()
+{
+  // TODO
+}
+
+int get_y()
+{
+  // TODO
 }
 
 
