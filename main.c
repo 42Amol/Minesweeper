@@ -24,6 +24,8 @@ void generate_board(cell_t board[HEIGHT][WIDTH]);
 void place_mine(cell_t board[HEIGHT][WIDTH], int x, int y);
 void increase_cell_value(cell_t board[HEIGHT][WIDTH], int x, int y);
 int play(cell_t board[HEIGHT][WIDTH]);
+int get_x();
+int get_y();
 void display_board(cell_t board[HEIGHT][WIDTH]);
 void reveal_board(cell_t board[HEIGHT][WIDTH]);
 
@@ -116,20 +118,20 @@ int play(cell_t board[HEIGHT][WIDTH])
 
     while (1)
     {
-         display_board(board);
+        display_board(board);
 
         int x = get_x();
         int y = get_y();
-        struct cell_t *target = &board[x][y];
+        cell_t *target = &board[x][y];
 
-        if (*target.symbol == 'X')
+        if (target->symbol == 'X')
             return 1; // mine dug => lose
 
-        if (*target.hidden == 0)
+        if (target->hidden == 0)
             printf("You already dug this cell");
         else
         {
-            *target.hidden = 0; // mark as dug
+            target->hidden = 0; // mark as dug
             if (--to_dig == 0)
                 return 0; // all blank cells have been dug
         }
