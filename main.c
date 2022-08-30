@@ -118,6 +118,7 @@ int play(cell_t board[HEIGHT][WIDTH])
 
     while (1)
     {
+        clrscr();
         display_board(board);
 
         int x = get_x();
@@ -140,12 +141,24 @@ int play(cell_t board[HEIGHT][WIDTH])
 
 int get_x()
 {
-  // TODO
+    int x = -1;
+    while (x < 0 || x >= HEIGHT)
+    {
+        printf("Please give vertical coordinate:\n");
+        scanf("%d", &x);
+    }
+    return x;
 }
 
 int get_y()
 {
-  // TODO
+    int y = -1;
+    while (y < 0 || y >= WIDTH)
+    {
+        printf("Please give horizontal coordinate:\n");
+        scanf("%d", &y);
+    }
+    return y;
 }
 
 
