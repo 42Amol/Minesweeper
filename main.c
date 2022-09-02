@@ -27,6 +27,7 @@ void increase_cell_value(cell_t board[HEIGHT][WIDTH], int x, int y);
 int play(cell_t board[HEIGHT][WIDTH]);
 int get_x();
 int get_y();
+int replay();
 void display_board(cell_t board[HEIGHT][WIDTH]);
 void reveal_board(cell_t board[HEIGHT][WIDTH]);
 
@@ -35,15 +36,17 @@ int main()
 {
     cell_t board[HEIGHT][WIDTH];
 
-    generate_board(board);
+    do
+    {
+        generate_board(board);
 
-    int result = play(board);
-    clrscr();
-    result == 0
-        ? printf("Congratulations! You won!\n\n")
-        : printf("You lost...\n\n");
-    reveal_board(board);
-    
+        int result = play(board);
+        clrscr();
+        result == 0
+          ? printf("Congratulations! You won!\n\n")
+          : printf("You lost...\n\n");
+        reveal_board(board); 
+    } while (replay() == 1); 
 
     return 0;
 }
@@ -162,6 +165,21 @@ int get_y()
         scanf("%d", &y);
     }
     return y;
+}
+
+int replay()
+{
+    char ans;
+    while (1)
+    {
+        printf("Play again? (y/n): ");
+        scanf("%c", &ans);
+
+        if (ans == 'y' || ans == 'Y')
+          return 1;
+        if (ans == 'n' || ans == 'N')
+          return 0;
+    }
 }
 
 
