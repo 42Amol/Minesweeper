@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 // Clear console screen on windows and linux
 #ifdef _WIN32
@@ -68,6 +69,8 @@ void generate_board(cell_t board[HEIGHT][WIDTH])
     // generate a set of `MINES` unique positive number < `SIZE`
     int i_m = 0;
     char is_used[SIZE];
+
+    srand(time(NULL));
     
     for (int i = 0; i < SIZE; i++)
         is_used[i] = 0;
