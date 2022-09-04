@@ -9,6 +9,14 @@
     #define clrscr() printf("\e[1;1H\e[2J") // on linux, use ASCII escape codes
 #endif
 
+#define DEF "\e[0m"
+#define RED "\e[0;31m"
+#define GRN "\e[0;32m"
+#define YEL "\e[0;33m"
+#define BLU "\e[0;34m"
+#define MAG "\e[0;35m"
+#define CYN "\e[0;36m"
+#define WHT "\e[0;37m"
 
 const int HEIGHT = 10;
 const int WIDTH = 10;
@@ -30,6 +38,7 @@ int get_y();
 int replay();
 void display_board(cell_t board[HEIGHT][WIDTH]);
 void reveal_board(cell_t board[HEIGHT][WIDTH]);
+void print_cell(char c);
 
 
 int main()
@@ -193,9 +202,10 @@ void display_board(cell_t board[HEIGHT][WIDTH])
     for (int i = 0; i < HEIGHT; i++)
     {
         for (int j = 0; j < WIDTH; j++) 
-            printf(" %c", board[i][j].hidden == 0 ? board[i][j].symbol : '-');
+            print_cell(board[i][j].hidden == 0 ? board[i][j].symbol : '-');
         printf("\n");
-    } 
+    }
+    printf(DEF); // reset color
 }
 
 /*
@@ -206,7 +216,45 @@ void reveal_board(cell_t board[HEIGHT][WIDTH])
     for (int i = 0; i < HEIGHT; i++)
     {
         for (int j = 0; j < WIDTH; j++) 
-            printf(" %c", board[i][j].symbol);
+            print_cell(board[i][j].symbol);
         printf("\n");
     } 
+    printf(DEF); // reset color
+}
+
+void print_cell(char c)
+{
+    switch (c)
+    {
+    case '-':
+    case '0':
+        printf(WHT);
+        break;
+    case '1':
+    case '6':
+        printf(CYN);
+        break;
+    case '2':
+    case '7':
+        printf(GRN);
+        break;
+    case '3':
+    case '8':
+        printf(YEL);
+        break;
+    case '4':
+        printf(MAG);
+        break;
+    case '5':
+        printf(BLU);
+        break;
+    case 'X':
+        printf(RED);
+        break;
+    default:
+        printf(DEF);
+        break;
+    }
+
+    printf(" %c", c);
 }
